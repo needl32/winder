@@ -24,8 +24,8 @@ jobs:
       - name: npm install, build, and test
         run: |
           npm install
-          npm run build --if-present
-          npm run test --if-present
+          npm run build:prod
+          npm install -u pm2 -g
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v2
@@ -54,3 +54,4 @@ jobs:
           slot-name: 'Production'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_FA2FD86F0AEF4D3499BA788028BAE008 }}
           package: .
+          startup-command: pm2-runtime start server/index.js exec_mode cluster instances max
